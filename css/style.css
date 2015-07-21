@@ -1,0 +1,286 @@
+body {
+	font-family: sans-serif;
+	padding: 4px;
+}
+
+#info2:empty, #info:empty, #photos:empty, #pie:empty {
+	display: none;
+}
+
+#popup {
+    position: absolute;
+    display: none;
+    background: #ffffff;
+    border: 1px solid;
+    width: 250px;
+}
+
+.fake-link {
+	color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.highlighted {
+	opacity: 0.5;
+}
+
+.popbox, .datum {
+	border-right: 1px solid;
+	border-left: 1px solid;
+}
+
+.vertical-text2 {
+	transform-origin: top left;
+	transform: rotate(315deg);
+	height: 20px;
+	width: 200px;
+	font-family: sans-serif;
+}
+
+.fixed {
+	position: fixed;
+	top:120px;
+
+	height: 100px;
+}
+
+#header {
+	height: 100px;
+}
+
+.border {
+	display: none;
+	height: 140px;
+	position: fixed;
+	width: 100%;
+	background-color: white;
+	top: 0px;
+}
+
+.fixed.border {
+	display: block;
+}
+
+.counter {
+	display: inline-block;
+	width: 32px;
+	margin-top: 150px;
+}
+
+#counter_table {
+	width: 800px;
+	float: left;
+}
+
+.sortable-placeholder {
+	width: 32px;
+	height: 1px;
+	display: inline-block;
+	margin-top: 150px;
+}
+
+.datum {
+	width: 32px; 
+	height: 5px;
+}
+
+.dateType {
+	width: 60px;
+	display: inline-block;
+}
+
+.dateInput {
+	display: inline-block;
+}
+
+#pie {
+	height: 175px;
+	float: left;
+	border: solid 1px;
+	padding: 4px;
+}
+
+#chart {
+	clear: both;
+	height: 400px;
+}
+
+div[hour="23:00"] {
+	border-bottom: 2px solid;	
+}
+
+div[day=Sunday][hour="23:00"] {
+	border-bottom: 10px solid;	
+}
+
+.label {
+	width: 50px;
+	float: left;
+	display:inline-block;
+	clear: both;
+}
+
+.value {
+	font-family: sans-serif;
+	font-weight: bold;
+	width: 200px;
+	display:inline-block;
+}
+
+.name {
+	font-weight: bold;
+}
+
+#legend {
+	position: fixed;
+	bottom: 1em;
+	right: 1em;
+	z-index: 10;
+}
+
+#filter_list {
+	width: 60%;
+}
+
+#info_table {
+	padding: 25px;
+}
+
+#info2 {
+	float: left;
+	border: solid 1px;
+	padding: 4px;
+	height: 175px;
+	width: 250px;
+}
+
+.photo {
+	height: 75px;
+}
+
+#photos {
+	border: solid 1px;
+	padding: 4px;
+	float: left;
+	clear: both;
+}
+
+.photo_link {
+	display:inline-block;
+	margin-right:10px;
+	float: left;
+}
+
+.stats_model {
+	border: solid 1px;
+	float: left;
+	padding: 4px;
+	height: 175px;
+}
+
+#navigation2 {
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%);
+	clear: both;
+}
+
+#chart_container {
+	height: 4000px;
+}
+
+#percentile-value {
+	width: 20px;
+}
+
+#stdDev-factor {
+	width: 150px;
+}
+
+#percentile-factor {
+	width: 150px;
+}
+
+.c1 {
+	background-color: #FFFFFF;
+}
+
+.c2 {
+	background-color: #EEEEEE;
+}
+
+.c3 {
+	background-color: #DDDDDD;
+}
+
+.c4 {
+	background-color: #CCCCCC;
+}
+
+.c5 {
+	background-color: #BBBBBB;
+}
+
+.c6 {
+	background-color: #AAAAAA;
+}
+
+.c7 {
+	background-color: #999999;
+}
+
+.c8 {
+	background-color: #888888;
+}
+
+.c9 {
+	background-color: #777777;
+}
+
+.c10 {
+	background-color: #666666;
+}
+
+.c11 {
+	background-color: #555555;
+}
+
+.c12 {
+	background-color: #444444;
+}
+
+.c13 {
+	background-color: #333333;
+}
+
+.c14 {
+	background-color: #222222;
+}
+
+.c15 {
+	background-color: #111111;
+}
+
+.c16 {
+	background-color: #000000;
+}
+
+.c17 {
+	background-color: #FF0000;
+}
+
+.c18 {
+	background-color: blue;
+}
+
+.c19 {
+	background-color: #F9F9CB;
+}
+
+.stdDev {
+	background-color: orange;
+}
+
+
+

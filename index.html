@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>Report Helper 1.5</title>
+        <link rel="stylesheet" href="libraries/DataTables-1.10.7/media/css/jquery.dataTables.css"/>
+        <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico">
+        <!-- <link rel="stylesheet" href="css/style.css"/> -->
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/myStyle.css"/>
+        <link rel="stylesheet" href="libraries/bootstrap-datepicker-1.4.0-dist/css/bootstrap-datepicker.css"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class='border'></div>
+            <div id="search"></div>
+            <div id="info"></div>
+            <div id="dropdown"></div>
+            <div id="main"></div>
+            <div id="date"></div>
+            <div id="submit"></div>
+            <div id="sdButton"></div>
+            <div id="parameter"></div>
+            <div id="navigation"></div>
+            <div id="counters"></div>
+            <div id="legend"></div>
+
+            <div id="info2" class="well"></div>
+            <div id="stats"></div>
+            <div id="pie" class="well"></div>
+            <div id="chart"></div>
+            <div id="map"></div>
+            <div id="options"></div>
+            <div id="navigation2"></div>
+            <div id="photos" class="well"></div>
+
+            <div id="general_info"></div>
+
+            <div id="popup" class="popbox"></div>
+        </div>
+        <!-- TEMPLATES -->
+
+       	<!-- search_template -->
+		<script type="text/template" id="search_template">
+            <div class="search_area">
+                <form class="form-horizontal" role="form">
+        		      <input class="form-control input-sm" type="text" id="search_input" placeholder="Domain" />
+        		    <button type="button" class="btn btn-primary btn-sm" id="search_button">Search</button>
+                </form>
+            </div>
+		</script>
+
+        <!-- searchList_template -->
+        <script type="text/template" id="searchList_template">
+            <button type="button" class="domain_link btn btn-link btn-sm" data-id="<%- id %>"><%- name %></button>
+        </script>
+
+        <!-- counterList_template -->
+        <script type="text/template" id="counterList_template">
+            <td><%- name %></td><td><%- id %></td><td><%- serial %></td><td><input type='checkbox' 
+            id='<%- id %>-<%- serial %>' value='checked' checked></td>
+        </script>
+
+        <!-- header_template -->
+        <script type="text/template" id="header_template">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Id</th>
+                    <th>Serial</th>
+                    <th><input type='checkbox' id='check_all' value='checked' checked></th>
+                </tr>
+            </thead>
+        </script>
+
+        <!-- submit_template -->
+        <script type="text/template" id="submit_template">
+            <button type='button' class="domain_link btn btn-primary btn-sm" id='submit_button'>Submit</button>
+        </script>
+
+        <!-- date_template -->
+        <script type="text/template" id="date_template">
+            <div class="well">
+                <div class="form-group">
+                    <label for="date_begin">Begin: </label>
+                    <div class="input-group date col-lg-2">
+                        <input type="text" class="dateInput form-control" id="date_begin" value='<%- begin %>'><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    </div>
+                    <label for="date_end">End: </label>
+                    <div class="input-group date col-lg-2">
+                        <input type="text" class="dateInput form-control" id="date_end" value='<%- end %>'><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="step_selector">Step: </label>
+                        <select class="form-control select_step" id="step_selector">
+                            <option selected="selected" value="3">Hourly</option>
+                            <option value="4">Daily</option>
+                        </select>
+                </div>
+
+            </div>
+        </script>
+
+        <!-- row_template -->
+        <script type="text/template" id="row_template">
+        </script>
+
+        <!-- legend_template -->
+        <script type="text/template" id="legend_template">
+            <table id="legend">
+                <tr>
+                    <td style="background-color: #0078d7">No data</td>
+                </tr>
+                <tr>
+                    <td style="background-color: #F9F9CB">0 count</td>
+                </tr>
+                <tr>
+                    <td style="background-color: #888888">count &#60; <%- percentileFactor %>x<%- percentile%>th percentile</td>
+                </tr>
+                <tr>
+                    <td style="background-color: #FF0000">count &#8805; <%- percentileFactor %>x<%- percentile%>th percentile</td>
+                </tr>
+                <tr>
+                    <td style="background-color: orange">count &#8805; avg + <%- sdFactor %>xSD</td>
+                </tr>
+            </table>
+        </script>
+
+        <!-- infoTable_template -->
+        <script type="text/template" id="infoTable_template">
+            <div class="well">
+                <div id='info_table'>
+                    Domain: <%- name %><br>
+                    # of Counters: <%- nb_counters %><br>
+                    Begin: <%- begin %><br>
+                    End: <%- end %><br>
+                    <p><a target="_blank" href="http://www.eco-public.com/VisioManagerV2/resources/#domain:id=<%- id %>">VisioManager Domain</a></p>
+                </div>
+            </div>
+        </script>
+
+        <script type="text/template" id="navigation_template_day">
+            <div class="navigation">
+                <button type="button" class="btn btn-link btn-sm" id="previous">Previous Day</button>
+                <button type="button" class="btn btn-link btn-sm" id="next">Next Day</button>
+            </div>
+        </script>
+
+        <script type="text/template" id="navigation_template_week">
+            <div class="navigation">
+                <button type="button" class="btn btn-link btn-sm" id="previous">Previous Week</button>
+                <button type="button" class="btn btn-link btn-sm" id="next">Next Week</button>
+            </div>
+        </script>
+
+        <script type="text/template" id="navigation_template_month">
+            <div class="navigation">
+                <button type="button" class="btn btn-link btn-sm" id="previous">Previous Month</button>
+                <button type="button" class="btn btn-link btn-sm" id="next">Next Month</button>
+            </div>
+        </script>
+
+        <script type="text/template" id="navigation_template_3_month">
+                <button type="button" class="btn btn-link btn-sm" id="previous">Previous 3 Months</button>
+                <button type="button" class="btn btn-link btn-sm" id="next">Next 3 Months</button>
+            </div>
+        </script>
+
+        <script type="text/template" id="sdbutton_template">
+
+            <div class="well">
+                <div class="form-group">
+                    <label for="dropdownDate_selector">Interval: </label>
+                        <select class="form-control select_interval" id="dropdownDate_selector">
+                            <option value=""></options>
+                            <option value="2">Rolling week</option>
+                            <option value="3">Previous week</option>
+                            <option value="4">Rolling month</option>
+                            <option value="5">Previous month</option>
+                            <option value="6">Rolling 3 months</option>
+                            <option value="7">Previous 3 months</option>
+                        </select>
+                </div>
+                <div></div>
+
+                <label for="stdDev-factor">Standard Deviation Factor: </label>
+                <form class="form-horizontal" oninput="amount.value=stdDevInput.value" role="form">
+                    <div class="input-group col-lg-2">
+                        <input type="range" class="rangeInput" id="stdDev-factor" name="stdDevInput" min="0" max="2" step="0.25" value="1.75"></input>
+                        <output name="amount" class="rangeOutput" for="stdDevInput">1.75</output><br>
+                    </div>
+                </form>
+
+                <label for="percentile-factor">Percentile Factor: </label>
+                <form class="form-horizontal" oninput="amount.value=percentileInput.value" role="form">
+                    <div class="input-group col-lg-2">
+                        <input type="range" class="rangeInput" id="percentile-factor" name="percentileInput" min="0" max="5" value="5"></input>
+                        <output name="amount" class="rangeOutput" for="percentileInput">5</output>
+                    </div>
+                </form>
+
+                <div class="input-group col-sm-1">
+                    <label for="percentile-value">Percentile</label>
+                    <input class="form-control input-sm" type="text" id="percentile-value" placeholder="Percentile" value="95" data-toggle="tooltip" title="Changing this value refreshes the table and may take time." data-placement="top"></input>
+                    
+                </div>
+                <div class="para_buttons">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary" id="sd_button" value="SD">SD</button>
+                        <button type="button" class="btn btn-primary" id="nosd_button" value="no SD">No SD</button>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary" id="alphaSort_button">Sort Alphabetically</button>
+                        <button type="button" class="btn btn-primary" id="worstSort_button" data-toggle="tooltip" title="Sort the red counts in decreasing order and the blue counts in increasing order. Red counts have priority." data-placement="bottom">Sort by Red</button>
+                        <button type="button" class="btn btn-primary" id="sdSort_button" data-toggle="tooltip" title="Sort the orange counts in decreasing order and the blue counts in increasing order. Orange counts have priority." data-placement="bottom">Sort by Orange</button>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary" id="unhide_button">Unhide All</button>
+                        <button type="button" class="btn btn-primary" id="undoHide_button">Unhide Last</button>
+                        <button type="button" class="btn btn-primary" id="hideBlue_button" data-toggle="tooltip" title="Remove all columns that have exclusively only 'null' data" data-placement="bottom">Remove Blue Columns</button>
+                    </div>
+                </div>
+            </div>
+        </script>
+
+        <script type="text/template" id="chart_container_template">
+            <div id="chart_container"></div>
+        </script>
+
+        <script type="text/template" id="hour_template">
+        </script>
+
+         <script type="text/template" id="column_template">
+            <div class="vertical-text2"><input type='checkbox' class='hideMe' id='<%- id %>'> <%- name %></div>
+        </script>
+
+
+
+
+        <script type="text/template" id="info_template">
+            <div class="name">Name:</div><div class="value"><%- name %></div>
+            <div class="name">Id: </div><div class="value"><%- id %></div>
+            <div class="name">Serial: </div><div class="value"><%- serial %></div>
+            <div class="name">Date: </div><div class="value"><%- date %></div>
+            <div><a target="_blank" href="http://www.eco-public.com/VisioManagerV2/resources/#counter:id=<%- id %>">VisioManager Counter</a></div>
+            <div><a target="_blank" href="http://www.eco-public.com/VisioManagerV2/resources/#domain:id=<%- organisme %>">VisioManager Domain</a></div>
+            <div><a target="_blank" href="https://www.google.com/maps?q=<%- latitude %>,<%- longitude %>">Google Map</a></div>
+        </script>
+
+        <script type="text/template" id="options_template">
+            Step: <select id="step_selector">
+                <option value=""></options>
+                <option value="2">15 mins</option>
+                <option value="3">Hourly</option>
+                <option value="4">Daily</option>
+                <option value="5">Weekly</option>
+                <option value="6">Monthly</option>
+            </select>
+            Period: <select id="period_selector">
+                <option value=""></options>
+                <option value="4">Daily</option>
+                <option value="5">Weekly</option>
+                <option value="6">Monthly</option>
+            </select>
+        </script>
+
+        <script type="text/template" id="stats_template">
+            <div class="well">
+                <div id="oneStat">
+                    <div id="name"><%- name %></div>
+                    <div id="average">Average: <%- average %></div>
+                    <div id="max">Maximum: <%- maximum %></div>
+                </div>
+            </div>
+        </script>
+
+        <script type="text/template" id="stats2_template">
+            <div class="well">
+                <div id="oneStat">
+                    <div class="channelName"><%- name %></div>
+                    <div class="average">Average: <%- average %></div>
+                    <div class="max">Maximum: <%- maximum %></div>
+                </div>
+                <div id="oneStat">
+                    <div class="channelName"><%- nameIn %></div>
+                    <div class="average">Average: <%- averageIn %></div>
+                    <div class="max">Maximum: <%- maximumIn %></div>
+                </div>
+                <div id="oneStat">
+                    <div class="channelName"><%- nameOut %></div>
+                    <div class="average">Average: <%- averageOut %></div>
+                    <div class="max">Maximum: <%- maximumOut %></div>
+                </div>
+            </div>
+        </script>
+
+        <script type="text/template" id="photo_template">
+            <a class="photo_link" target="_blank" href="<%- photo %>"><img class="photo img-thumbnail" src="<%- photo %>"></a>
+        </script>
+
+        <!-- SCRIPTS -->
+        <script src="libraries/jquery-1.11.1.min.js"></script>
+	    <script src="libraries/lodash.min.js"></script>
+	    <script src="libraries/backbone-min.js"></script>
+	    <script src="libraries/backbone.marionette.min.js"></script>
+	    <script src="libraries/jquery-ui.js"></script>
+	    <script src="libraries/date.js"></script>
+   		<script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
+        <script src="libraries/DataTables-1.10.7/media/js/jquery.dataTables.js"></script>
+        <script src="libraries/Highstock-2.1.6/js/highstock.js"></script>
+        <script src="libraries/heatmap.js"></script>
+        <script src="libraries/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
+
+        <!-- Latest compiled JavaScript -->
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <script src="libraries/bootstrap-datepicker-1.4.0-dist/js/bootstrap-datepicker.js"></script>
+
+        <script src="js/helper.js"></script>
+        <script src="js/helper_controller.js"></script>
+        <script src="js/helper_first.js"></script>
+        <script src="js/helper_second.js"></script>
+
+        <!-- MODELS -->
+        <script src="js/model/search.js"></script>
+        <script src="js/model/domain.js"></script>
+        <script src="js/model/counter.js"></script>
+        <script src="js/model/date.js"></script>
+        <script src="js/model/data.js"></script>
+        <script src="js/model/myModel.js"></script>
+
+        <script src="js/model/channel.js"></script> 
+        <script src="js/model/stats.js"></script>
+        <script src="js/model/photo.js"></script>        
+
+        <!-- VIEWS -->
+        <script src="js/view/search.js"></script>
+        <script src="js/view/searchList.js"></script>
+        <script src="js/view/counter.js"></script>
+        <script src="js/view/submit.js"></script>
+        <script src="js/view/date.js"></script>
+        <!-- <script src="js/view/table.js"></script>-->
+        <script src="js/view/legend.js"></script>
+        <script src="js/view/infotable.js"></script>
+        <script src="js/view/navigationTable.js"></script>
+        <script src="js/view/sdbutton.js"></script>
+
+        <!-- <script src="js/view/tableTEST.js"></script> -->
+        <script src="js/view/tableTEST2.js"></script>
+
+        <script src="js/view/chart.js"></script>
+        <script src="js/view/navigation.js"></script>
+        <script src="js/view/info.js"></script>
+        <script src="js/view/options.js"></script>
+        <script src="js/view/stats.js"></script>
+        <script src="js/view/photo.js"></script>
+        <script src="js/view/parameters.js"></script>
+        <!-- LAYOUT -->
+        <script src="js/layout.js"></script>
+
+        <script src="https://www.eco-counter.ca/auth/key/"></script>
+    </body>
+</html>

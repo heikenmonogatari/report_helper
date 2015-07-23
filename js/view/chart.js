@@ -188,7 +188,12 @@ ChartItemView = Backbone.Marionette.ItemView.extend({
 	        },
 	        xAxis: {
 	            type: 'datetime',
-	            minRange: 24 * 3600000 
+	            minRange: 24 * 3600000,
+	            labels: {
+			       enabled: false
+			    },
+			    minorTickLength: 0,
+			    tickLength: 0
 	        },
 	        legend: {
 	            enabled: false

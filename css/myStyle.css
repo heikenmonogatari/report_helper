@@ -119,6 +119,10 @@ body {
 	opacity: 0.5;
 }
 
+.selected {
+	opacity: 0.5;
+}
+
 div[hour="23:00"] {
 	border-bottom: 2px solid;	
 }

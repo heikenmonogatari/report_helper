@@ -73,6 +73,9 @@ var TableItemViewTest = Backbone.Marionette.ItemView.extend({
 	},
 
 	mouseOver: function(e) {
+		if (e.ctrlKey) {
+			$(e.target).addClass('selected');
+		}
   		$('#popup').html("<div class='name'>Name: </div><div class='value'>" + this.name + 
   			"</div><div class='name'>Id: </div><div class='value'>" + this.idNum + 
   			"</div><div class='name'>Serial: </div><div class='value'>" + this.serial +

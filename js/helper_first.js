@@ -99,7 +99,7 @@ MyApp.module('FirstPage', function (FirstPage, MyApp, Backbone, Marionette, $, _
 			FirstPage.root.showChildView('date', this.dateView);
 		},
 
-		/*createData: function(counters) {
+		createData: function(counters) { // Requests are done one after the other
 
 			if (this.dateCollectionView) this.dateCollectionView.remove();
 			if (this.submitItemView) this.submitItemView.remove();
@@ -135,16 +135,16 @@ MyApp.module('FirstPage', function (FirstPage, MyApp, Backbone, Marionette, $, _
 				});
 			}else{
 				self.showTable(counters);
-				self.showSDButton(counters);
+				self.showButtons(counters);
 			}
-		},*/
+		},
 
 		showButtons: function(counters) {
 			this.parameterButtons = new ButtonsView({collection: counters, myModel: this.model});
 			FirstPage.root.showChildView('buttons', this.parameterButtons);
 		},
 
-		createData: function(counters) {
+		/*createData: function(counters) { // Requests are done at the same time
 			var self = this;
 			var nbCounters = counters.length;
 			var index = 0;
@@ -182,7 +182,7 @@ MyApp.module('FirstPage', function (FirstPage, MyApp, Backbone, Marionette, $, _
 					}
 				});
 			};	
-		},
+		},*/
 
 		showTable: function(counters) {
 

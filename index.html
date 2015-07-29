@@ -29,7 +29,9 @@
             <div id="info2" class="well"></div>
             <div id="stats"></div>
             <div id="pie" class="well"></div>
+            <div id="switchButton"></div>
             <div id="chart"></div>
+            <div id="cumulChart"></div>
             <div id="map"></div>
             <div id="options"></div>
             <div id="navigation2"></div>
@@ -303,6 +305,11 @@
             <a class="photo_link" target="_blank" href="<%- photo %>"><img class="photo img-thumbnail" src="<%- photo %>"></a>
         </script>
 
+        <script type="text/template" id="switch_template">
+            <button type="button" id="chartToggle" class="btn btn-primary">Default Chart</button>
+            <button type="button" id="cumulChartToggle" class="btn btn-primary">Multiple Weeks</button>
+        </script>
+
         <!-- SCRIPTS -->
         <script src="libraries/jquery-1.11.1.min.js"></script>
 	    <script src="libraries/lodash.min.js"></script>
@@ -348,6 +355,8 @@
         <script src="js/view/infotable.js"></script>
         <script src="js/view/navigationTable.js"></script>
         <script src="js/view/sdbutton.js"></script>
+        <script src="js/view/cumulChart.js"></script>
+        <script src="js/view/switch.js"></script>
 
         <!-- <script src="js/view/tableTEST.js"></script> -->
         <script src="js/view/tableTEST2.js"></script>

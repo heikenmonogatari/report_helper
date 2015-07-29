@@ -20,6 +20,7 @@ MyApp.module('Layout', function (Layout, MyApp, Backbone) {
             photo: '#photos',
             map: '#map',
             navigation2: '#navigation2',
+            switchButton: '#switchButton' 
         }
     });
 });

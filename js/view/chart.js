@@ -2,7 +2,7 @@
 ChartItemView = Backbone.Marionette.ItemView.extend({
 
 	initialize: function() {
-		this.fetchData();
+		this.fetchData(); // graph of specified day
 	},
 
 	fetchData: function() {
@@ -244,6 +244,8 @@ ChartItemView = Backbone.Marionette.ItemView.extend({
 
 	makeStack: function(series, begin, end) {
 
+		console.log(series);
+
 		if (this.model.get('period') == 4) {
 			var period = "Day";
 		}else if (this.model.get('period') == 5) {
@@ -461,3 +463,6 @@ ChartItemView = Backbone.Marionette.ItemView.extend({
 		}
 	}
 });
+
+
+//moment.utc( data.get('date'), "YYYY-MM-DD HH:mm:ss" ).unix() * 1000

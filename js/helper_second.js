@@ -22,7 +22,8 @@ MyApp.module('SecondPage', function (SecondPage, MyApp, Backbone, Marionette, $,
 				end: this.end, 
 				step: this.step, 
 				period: this.period, 
-				hour: this.hour
+				hour: this.hour,
+				view: 0
 			});
 
     		this.myModel.url = "https://api.eco-counter-tools.com/v1/" + MyApp.apiKey + "/counting_site/" + this.id;
@@ -42,6 +43,18 @@ MyApp.module('SecondPage', function (SecondPage, MyApp, Backbone, Marionette, $,
 		showChart: function() {
 			console.log("Displaying chart...");
 			var chartItemView = new ChartItemView({model: this.myModel});
+
+			if (!chartItemView) {
+				var chartItemView = "";
+			}
+
+			var switchItemView = new SwitchItemView({view: chartItemView});
+			SecondPage.root.showChildView('switchButton', switchItemView);	
+		},
+
+		showCumulChart: function() {
+			console.log("Displaying chart with multiple weeks...");
+			var cumulChart = new CumulChartItemView({model: this.myModel});
 		},
 
 		showNavigation: function() {
@@ -93,5 +106,13 @@ MyApp.module('SecondPage', function (SecondPage, MyApp, Backbone, Marionette, $,
 
 	MyApp.on('displayStats', function(options){
 		SecondPage.controller.showStats(options);
+    });
+
+    MyApp.on('showCumulChart', function() {
+    	SecondPage.controller.showCumulChart();
+    });
+
+    MyApp.on('showChart', function() {
+    	SecondPage.controller.showChart();
     });
 });

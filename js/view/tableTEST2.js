@@ -61,6 +61,10 @@ var TableItemViewTest = Backbone.Marionette.ItemView.extend({
 			this.category = "c17";
 		}
 
+		if (this.model.get('status') == 0) {
+			this.$el.css({'border-right-color': 'red'});
+		}
+
 		this.$el.attr('class', "datum " + this.category);
 	},
 

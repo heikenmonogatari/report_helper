@@ -14,6 +14,20 @@ var SearchView = Backbone.Marionette.ItemView.extend({
         var filtered = this.collection.byQuery(query);
 
         MyApp.trigger('search',filtered);
+
+        /*var query = $("#search_input").val();
+        console.log("You have searched: " + query);
+
+        var domainList = new DomainList();
+
+        domainList.url = "https://api.eco-counter-tools.com/v1/" + MyApp.apiKey + "/domains/search/"
+                        + query;
+
+        domainList.fetch({
+            success: function() {
+                MyApp.trigger('search',domainList);
+            }
+        });*/
     },
 
     keyAction: function(e) {

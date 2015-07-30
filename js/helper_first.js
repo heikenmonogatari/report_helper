@@ -21,6 +21,8 @@ MyApp.module('FirstPage', function (FirstPage, MyApp, Backbone, Marionette, $, _
 					self.showSearchButton();
 				}
 			})
+
+			//this.showSearchButton();
 		},
 
 		showSearchButton: function() {

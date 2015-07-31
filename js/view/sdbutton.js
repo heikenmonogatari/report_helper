@@ -12,10 +12,15 @@ ButtonsView = Backbone.Marionette.ItemView.extend({
         "click #unhide_button" : "unhideCounters",
         "click #undoHide_button" : "undoHideCounter",
         "click #hideBlue_button" : "hideBlueCounter",
-        "change #dropdownDate_selector": "changeDate"
+        "change #dropdownDate_selector" : "changeDate",
+        "click #valMode_button" : "valMode",
+        "click #normalMode_button" : "norMode",
+        "click #validate_button" : "submitStatus",
+        "click #invalidate_button": "submitStatus"
     },
 
     initialize: function(options) {
+
         this.myModel = options.myModel;
 
         var factor = $('#stdDev-factor').val();
@@ -53,6 +58,20 @@ ButtonsView = Backbone.Marionette.ItemView.extend({
 
     onShow: function() {
         $('[data-toggle="tooltip"]').tooltip();
+
+        $('.input-group.date.begin').datetimepicker({
+            format: "YYYY-MM-DD HH:mm",
+            stepping: 15,
+            sideBySide: true,
+            defaultDate: moment().subtract(1, 'M').startOf('d').format('YYYY-MM-DD HH:mm')
+        });
+
+        $('.input-group.date.end').datetimepicker({
+            format: "YYYY-MM-DD HH:mm",
+            stepping: 15,
+            sideBySide: true,
+            defaultDate: moment().subtract(1, 'd').endOf('day').subtract(15, 'm').format('YYYY-MM-DD HH:mm')
+        });
     },
 
     showSD: function() {
@@ -295,5 +314,61 @@ ButtonsView = Backbone.Marionette.ItemView.extend({
         this.myModel.set({period: $("#dropdownDate_selector").val()})
 
         MyApp.trigger("refreshTable", this.collection);
+    },
+
+    valMode: function() {
+        $('.vertical-text2').each(function(i, obj) {
+            $(this).children('input').attr('class', "validateMe");
+        });
+
+        $('.validationOpts').show();
+    },
+
+    norMode: function() {
+        $('.vertical-text2').each(function(i, obj) {
+            $(this).children('input').attr('class', "hideMe");
+        });
+
+        $('.validationOpts').hide();
+    },
+
+    submitStatus: function(ev) {
+
+        var statusText = $(ev.target).text();
+
+        if (statusText === "Invalidate") {
+            var status = 8;
+            var activate = 0;
+        }else if(statusText === "Validate") {
+            var status = 8;
+            var activate = 1;
+        }
+
+        var begin = $('#date_begin').val();
+        var end = $('#date_end').val();
+
+        $('.vertical-text2').each(function(i, obj) {
+            if ($(this).children().is(":checked")) {
+                id = $(this).children().attr('id');
+
+                console.log(begin + ":00");
+                console.log(end + ":00");
+
+                var statusModel = new Backbone.Model({
+                    'id': id,
+                    'begin': begin + ":00",
+                    'end': end + ":00",
+                    'status': status,
+                    'activate': activate
+                });
+
+                statusModel.url = 'https://api.eco-counter-tools.com/v1/' + MyApp.apiKey + '/data/status';
+
+                console.log(statusModel.toJSON());
+
+                statusModel.save();
+            }
+        });
     }
 });
+

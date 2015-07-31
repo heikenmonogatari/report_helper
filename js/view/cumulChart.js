@@ -7,22 +7,25 @@ var CumulChartItemView = Backbone.Marionette.ItemView.extend({
 		var self = this;
 		var dataCollection = new DataCollection();
 
-		var currentDate = moment(this.model.get('date'));
+		/*var currentDate = moment(this.model.get('date'));
 		var currentDateClone = moment(currentDate);
 
-		if (moment().diff(currentDateClone.add(1, 'M'), 'd') < 0) {
+		if (moment().diff(currentDateClone.add(3, 'M'), 'd') < 0) {
 			console.log("hello");
-			this.end = moment().endOf('isoweek');
+			this.end = moment().endOf('day');
 			var endClone = moment(this.end);
-			this.begin = endClone.subtract(2, 'M').startOf('isoweek');
+			this.begin = endClone.subtract(6, 'M').startOf('isoweek');
 		}else{
-			this.begin = currentDate.subtract(1, 'M').startOf('isoweek');
+			this.begin = currentDate.subtract(3, 'M').startOf('isoweek');
 			var beginClone = moment(this.begin);			
-			this.end = beginClone.add(2, 'M').endOf('isoweek');
+			this.end = beginClone.add(6, 'M').endOf('isoweek');
 		}
 
 		console.log(this.begin.format('YYYYMMDD'));
-		console.log(this.end.format('YYYYMMDD'));
+		console.log(this.end.format('YYYYMMDD'));*/
+
+		this.begin = moment($('#date_begin').val());
+		this.end = moment($('#date_end').val());
 
 		var nbWeek = this.end.diff(this.begin, 'weeks') + 1;
 
@@ -48,6 +51,7 @@ var CumulChartItemView = Backbone.Marionette.ItemView.extend({
 
 			for (var j=0; j<168; j++) {
 				var datum = dataCollection.at(j + i * 168);
+				if (!datum) break;
 				data.push(datum.get('comptage'));
 			}
 			weekSerie.data = data;
@@ -69,9 +73,15 @@ var CumulChartItemView = Backbone.Marionette.ItemView.extend({
 	},
 
 	makeCumulWeekChart: function(series) {
+		var self = this;
+
+		console.log(this.model.toJSON());
 		$('#chart').highcharts({
+			chart: {
+				zoomType: 'xy'
+			},
 	        title: {
-	            text: 'Something',
+	            text: 'Something'
 	        },
 	        xAxis: {
 	        	type: 'datetime',
@@ -91,14 +101,27 @@ var CumulChartItemView = Backbone.Marionette.ItemView.extend({
 	        },
 	        tooltip: {
 	            formatter: function () {
-	                return this.series.name + " " + moment(this.x).format('HH.mm') + ': ' + this.y
+	                return this.series.name + " " + moment.utc(this.x).format('HH:mm') + ': ' + this.y
 	            }
 	        },
 	        plotOptions: {
 	            series: {
 	                marker: {
 	                    enabled: false
-	                }
+	                },
+	                point: {
+	                	events: {
+	                		click: function() {
+	                			var url = '#/id/' + self.model.get('id') 
+										+ '/date/' + this.series.name
+										+ '/step/' + 3
+										+ '/period/' + 5;
+
+								window.open(url, '_blank');
+	                		}
+	                	}
+	                },
+	                pointStart: Date.UTC(2012, 7, 14)
             	}
         	},
 	        legend: {
@@ -107,7 +130,12 @@ var CumulChartItemView = Backbone.Marionette.ItemView.extend({
 	            verticalAlign: 'middle',
 	            borderWidth: 0
 	        },
-	        series: series
+	        series: series,
+	        navigation: {
+	        	buttonOptions: {
+	        		
+	        	}
+	        }
 	    });
 	}
 });	

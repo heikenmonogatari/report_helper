@@ -32,6 +32,7 @@ var TableItemViewTest = Backbone.Marionette.ItemView.extend({
 		this.interval = this.limit / 15;
 
 		this.refreshColors();
+		this.refreshStatus();
 
 		this.$el.attr('idNum', this.idNum);
 		this.$el.attr('date', moment(this.model.get('date')).format('YYYY-MM-DD'));
@@ -61,11 +62,17 @@ var TableItemViewTest = Backbone.Marionette.ItemView.extend({
 			this.category = "c17";
 		}
 
-		if (this.model.get('status') == 0) {
-			this.$el.css({'border-right-color': 'red'});
-		}
-
 		this.$el.attr('class', "datum " + this.category);
+	},
+
+	refreshStatus: function() {
+		var status = this.model.get('status');
+
+		if (status == 0) {
+			this.$el.css({'border-right-color': 'red'});
+		}else if(status == 8) {
+			this.$el.css({'border-right-color': 'green'});
+		}
 	},
 
 	attributes: function() {
@@ -80,13 +87,24 @@ var TableItemViewTest = Backbone.Marionette.ItemView.extend({
 		if (e.ctrlKey) {
 			$(e.target).addClass('selected');
 		}
+
+		var status = this.model.get('status');
+
+		if (status == 0) {
+			var statusText = "Not valid/Unknown";
+		}else if (status == 8) {
+			var statusText = "Valid"
+		}
+
+
   		$('#popup').html("<div class='name'>Name: </div><div class='value'>" + this.name + 
   			"</div><div class='name'>Id: </div><div class='value'>" + this.idNum + 
   			"</div><div class='name'>Serial: </div><div class='value'>" + this.serial +
   			"</div><div class='name'> Date: </div><div class='value'>" + moment(this.model.get('date')).format('YYYY-MM-DD') + 
   			"</div><div class='name'>Day: </div><div class='value'>" + moment(this.model.get('date')).format('dddd') +
   			"</div><div class='name'>Hour: </div><div class='value'>" + moment(this.model.get('date')).format('HH:mm') + 
-  			"</div><div class='name'>Count: </div><div class='value'>" + this.model.get('comptage') + "</div></div>");
+  			"</div><div class='name'>Count: </div><div class='value'>" + this.model.get('comptage') + 
+  			"</div><div class='name'>Status: </div><div class='value'>" + statusText + "</div></div>");
 
   		var x = e.pageX,
 			y = e.pageY;

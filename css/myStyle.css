@@ -36,8 +36,15 @@ body {
 
 #legend {
 	position: fixed;
-	bottom: 1em;
-	right: 1em;
+	bottom: 15px;
+	right: 15px;
+	z-index: 10;
+}
+
+.validationOpts {
+	position: fixed;
+	top: 140px;
+	right: 15px;
 	z-index: 10;
 }
 
@@ -75,7 +82,7 @@ body {
 }
 
 .popbox, .datum {
-	border-right: 1px solid;
+	border-right: 3px solid;
 	border-left: 1px solid;
 }
 

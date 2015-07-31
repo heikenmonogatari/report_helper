@@ -9,7 +9,7 @@ MyApp.module('FirstPage', function (FirstPage, MyApp, Backbone, Marionette, $, _
 			FirstPage.root = new MyApp.Layout.Root();
 			/*FirstPage.main = new MyApp.Layout.Main();*/
 
-			this.domains = new DomainList();
+			/*this.domains = new DomainList();
 
 			this.domains.url = "https://api.eco-counter-tools.com/v1/" + MyApp.apiKey + "/counting_site/";
 
@@ -20,9 +20,9 @@ MyApp.module('FirstPage', function (FirstPage, MyApp, Backbone, Marionette, $, _
 					console.log("Domain list fetch complete...")
 					self.showSearchButton();
 				}
-			})
+			})*/
 
-			//this.showSearchButton();
+			this.showSearchButton();
 		},
 
 		showSearchButton: function() {

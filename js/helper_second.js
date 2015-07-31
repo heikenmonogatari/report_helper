@@ -48,7 +48,26 @@ MyApp.module('SecondPage', function (SecondPage, MyApp, Backbone, Marionette, $,
 				var chartItemView = "";
 			}
 
-			var switchItemView = new SwitchItemView({view: chartItemView});
+			var currentDate = moment(this.date);
+			var currentDateClone = moment(currentDate);
+
+			if (moment().diff(currentDateClone.add(3, 'M'), 'd') < 0) {
+				console.log("hello");
+				var end = moment().endOf('day');
+				var endClone = moment(end);
+				var begin = endClone.subtract(6, 'M').startOf('isoweek');
+			}else{
+				var begin = currentDate.subtract(3, 'M').startOf('isoweek');
+				var beginClone = moment(begin);			
+				var end = beginClone.add(6, 'M').endOf('isoweek');
+			}
+
+			var dateModel = new Backbone.Model({
+				'begin': begin.format('YYYY-MM-DD'),
+				'end': end.format('YYYY-MM-DD')
+			});
+
+			var switchItemView = new SwitchItemView({model: dateModel, view: chartItemView});
 			SecondPage.root.showChildView('switchButton', switchItemView);	
 		},
 

@@ -351,9 +351,6 @@ ButtonsView = Backbone.Marionette.ItemView.extend({
             if ($(this).children().is(":checked")) {
                 id = $(this).children().attr('id');
 
-                console.log(begin + ":00");
-                console.log(end + ":00");
-
                 var statusModel = new Backbone.Model({
                     'id': id,
                     'begin': begin + ":00",
@@ -364,9 +361,9 @@ ButtonsView = Backbone.Marionette.ItemView.extend({
 
                 statusModel.url = 'https://api.eco-counter-tools.com/v1/' + MyApp.apiKey + '/data/status';
 
-                console.log(statusModel.toJSON());
-
                 statusModel.save();
+
+                Backbone.globalEvent.trigger('fakeRefreshStatus', [id, begin, end, activate]);
             }
         });
     }

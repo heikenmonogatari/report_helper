@@ -103,6 +103,8 @@ MyApp.module('FirstPage', function (FirstPage, MyApp, Backbone, Marionette, $, _
 
 		createData: function(counters) { // Requests are done one after the other
 
+			this.counters = counters
+
 			if (this.dateCollectionView) this.dateCollectionView.remove();
 			if (this.submitItemView) this.submitItemView.remove();
 

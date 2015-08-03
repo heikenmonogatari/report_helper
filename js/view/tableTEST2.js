@@ -20,6 +20,9 @@ var TableItemViewTest = Backbone.Marionette.ItemView.extend({
 
 	initialize: function(options) {
 
+		_.bindAll(this, 'editLocalStatus');
+		/*Backbone.globalEvent.on('fakeRefreshStatus', this.editLocalStatus);*/
+
 		this.limit = options.limit;
 		this.name = options.name;
 		this.idNum = options.idNum;
@@ -37,6 +40,23 @@ var TableItemViewTest = Backbone.Marionette.ItemView.extend({
 		this.$el.attr('idNum', this.idNum);
 		this.$el.attr('date', moment(this.model.get('date')).format('YYYY-MM-DD'));
 	},
+
+	/*editLocalStatus: function(options) {
+
+		var id = options[0];
+		var begin = moment(options[1]);
+		var end = moment(options[2]);
+		var activate = options[3];
+
+		if ((moment(this.model.get('date')) <= end && moment(this.model.get('date')) >= begin) && this.idNum == id) {
+			if (activate == 0) {
+				this.model.set({'status': 0});
+			}else{
+				this.model.set({'status': 8});
+			}
+			this.refreshStatus();
+		}
+	},*/
 
 	refreshColors: function() {
 

@@ -6,6 +6,7 @@ MyApp.module('SecondPage', function (SecondPage, MyApp, Backbone, Marionette, $,
 
 			SecondPage.root = new MyApp.Layout.Root();
 
+			// info de l'URL
 			this.id = info[0];
 			this.date = info[1];
 			this.step = info[2];

@@ -258,17 +258,18 @@ div[day=Sunday][hour="23:00"] {
 	float: left;
 }
 
-#info2[class="well"] {
+#info2.well {
 	height: 220px;
 }
 
-#pie[class="well"] {
+#pie.well {
 	height: 220px;
 	padding: 2px;
 }
 
-#stats > .well {
+#stats .well {
 	padding: 2px;
+	height: 220px;
 }
 
 .channelName {

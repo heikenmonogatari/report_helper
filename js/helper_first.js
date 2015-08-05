@@ -1,5 +1,6 @@
 MyApp.module('FirstPage', function (FirstPage, MyApp, Backbone, Marionette, $, _){
 
+	// Global events - communication entre les views
 	Backbone.globalEvent = _.extend({}, Backbone.Events);
 
 	FirstPage.Controller = Marionette.Controller.extend({
@@ -79,6 +80,7 @@ MyApp.module('FirstPage', function (FirstPage, MyApp, Backbone, Marionette, $, _
 			FirstPage.root.showChildView('submit', this.submitItemView);
 		},
 
+		// Les views écoutent this.model et réagissent aux changements
 		showInfo: function(model) {
 
 			this.model = model;
@@ -102,8 +104,6 @@ MyApp.module('FirstPage', function (FirstPage, MyApp, Backbone, Marionette, $, _
 		},
 
 		createData: function(counters) { // Requests are done one after the other
-
-			this.counters = counters
 
 			if (this.dateCollectionView) this.dateCollectionView.remove();
 			if (this.submitItemView) this.submitItemView.remove();

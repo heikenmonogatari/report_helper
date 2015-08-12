@@ -72,9 +72,14 @@ MyApp.module('SecondPage', function (SecondPage, MyApp, Backbone, Marionette, $,
 			SecondPage.root.showChildView('switchButton', switchItemView);	
 		},
 
-		showCumulChart: function() {
+		showHourlyCumulChart: function() {
 			console.log("Displaying chart with multiple weeks...");
-			var cumulChart = new CumulChartItemView({model: this.myModel});
+			var cumulChart = new CumulHourlyChartItemView({model: this.myModel});
+		},
+
+		showDailyCumulChart: function() {
+			console.log("Displaying chart with multiple weeks...");
+			var cumulChart = new CumulDailyChartItemView({model: this.myModel});
 		},
 
 		showNavigation: function() {
@@ -128,8 +133,13 @@ MyApp.module('SecondPage', function (SecondPage, MyApp, Backbone, Marionette, $,
 		SecondPage.controller.showStats(options);
     });
 
-    MyApp.on('showCumulChart', function() {
-    	SecondPage.controller.showCumulChart();
+    MyApp.on('showHourlyCumulChart', function() {
+    	console.log("hello");
+    	SecondPage.controller.showHourlyCumulChart();
+    });
+
+    MyApp.on('showDailyCumulChart', function() {
+    	SecondPage.controller.showDailyCumulChart();
     });
 
     MyApp.on('showChart', function() {

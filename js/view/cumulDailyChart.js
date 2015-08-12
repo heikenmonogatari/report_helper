@@ -1,6 +1,6 @@
-var CumulHourlyChartItemView = Backbone.Marionette.ItemView.extend({
+var CumulDailyChartItemView = Backbone.Marionette.ItemView.extend({
 	initialize: function() {
-		this.fetchCumulData(); // graph of week containing all days as hourly data
+		this.fetchCumulData(); // graph of week containing all days as daily data
 	},
 
 	fetchCumulData: function() {
@@ -16,7 +16,7 @@ var CumulHourlyChartItemView = Backbone.Marionette.ItemView.extend({
 							+ this.model.get('id')
 							+ '?begin=' + this.begin.format('YYYYMMDD')
 							+ '&end=' + this.end.format('YYYYMMDD')
-							+ '&step=' + 3;
+							+ '&step=' + 4;
 
 		dataCollection.fetch({
 			success: function() {
@@ -33,24 +33,26 @@ var CumulHourlyChartItemView = Backbone.Marionette.ItemView.extend({
 			var weekSerie = {};
 			var data = [];
 
-			for (var j=0; j<168; j++) {
-				var datum = dataCollection.at(j + i * 168);
+			for (var j=0; j<7; j++) {
+				var datum = dataCollection.at(j + i * 7);
 				if (!datum) break;
 				data.push(datum.get('comptage'));
 			}
 			weekSerie.data = data;
-			weekSerie.name = moment(dataCollection.at(i*168).get('date')).format('YYYY-MM-DD');
+			weekSerie.name = moment(dataCollection.at(i*7).get('date')).format('YYYY-MM-DD');
 
-			if (moment(dataCollection.at(i*168).get('date')) >= moment(this.model.get('date')).startOf('isoweek') && 
-			 moment(dataCollection.at(i*168).get('date')) <= moment(this.model.get('date')).endOf('isoweek')) {
+			if (moment(dataCollection.at(i*7).get('date')) >= moment(this.model.get('date')).startOf('isoweek') && 
+			 moment(dataCollection.at(i*7).get('date')) <= moment(this.model.get('date')).endOf('isoweek')) {
 				weekSerie.lineWidth = 3;
 			}else{
 				weekSerie.lineWidth = 1;
 			}
 
-			//weekSerie.pointInterval = 3600 * 1000;
+			//weekSerie.pointInterval = 24 * 3600 * 1000;
 			series.push(weekSerie);
+
 		}
+
 
 		this.makeCumulWeekChart(series);
 	},
@@ -61,30 +63,26 @@ var CumulHourlyChartItemView = Backbone.Marionette.ItemView.extend({
 		console.log(this.model.toJSON());
 		$('#chart').highcharts({
 			chart: {
+				type: 'column',
 				zoomType: 'xy'
 			},
 	        title: {
 	            text: 'Something'
 	        },
 	        xAxis: {
-	        	categories: ["00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00",
-	        	"00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00",
-	        	"00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00",
-	        	"00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00",
-	        	"00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00",
-	        	"00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00",
-	        	"00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"]
+	        	categories: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 	        	/*type:'datetime',
-	            tickInterval:3600 * 1000,
+	            tickInterval:24 * 3600 * 1000,
 	            labels: {
 	                formatter: function () {
-	                    return Highcharts.dateFormat('%H', this.value);
+	                    return this.value;
 
 	                },
 	                style: {
 	                    color: '#89A54E'
 	                },
-	            }*/
+	            },
+	            startOfWeek: 1*/
 	        },
 	        yAxis: {
 	            title: {
@@ -96,11 +94,11 @@ var CumulHourlyChartItemView = Backbone.Marionette.ItemView.extend({
 	                color: '#808080'
 	            }]
 	        },
-	        tooltip: {
+	        /*tooltip: {
 	            formatter: function () {
-	                return "Week of: " + this.series.name + "<br>Day: " + moment(this.series.name).add(this.series.data.indexOf(this.point), 'h').format('YYYY-MM-DD') + " " + '<br>Hour: ' + this.x + '<br>Count: ' + this.y
+	                return this.series.name + " " + moment.utc(this.x).format('HH:mm') + ': ' + this.y
 	            }
-	        },
+	        },*/
 	        plotOptions: {
 	            series: {
 	                marker: {

@@ -16,7 +16,8 @@ ButtonsView = Backbone.Marionette.ItemView.extend({
         "click #valMode_button" : "valMode",
         "click #normalMode_button" : "norMode",
         "click #validate_button" : "submitStatus",
-        "click #invalidate_button": "submitStatus"
+        "click #invalidate_button": "submitStatus",
+        "click #submit_button" : "submit"
     },
 
     initialize: function(options) {
@@ -71,6 +72,10 @@ ButtonsView = Backbone.Marionette.ItemView.extend({
             stepping: 15,
             sideBySide: true,
             defaultDate: moment().subtract(1, 'd').endOf('day').subtract(15, 'm').format('YYYY-MM-DD HH:mm')
+        });
+
+        $('.input-group.date').datepicker({
+            format: "yyyy-mm-dd"
         });
     },
 
@@ -366,6 +371,21 @@ ButtonsView = Backbone.Marionette.ItemView.extend({
                 Backbone.globalEvent.trigger('fakeRefreshStatus', [id, begin, end, activate]);
             }
         });
-    }
+    },
+
+    submit: function() {
+        var beginM = moment($("#date_begin").val());
+        var endM = moment($("#date_end").val());
+
+        var step = $('#step_selector').val();
+
+        this.myModel.set({step: step});
+
+        console.log(step);
+
+        this.myModel.set({begin: beginM.format('YYYY-MM-DD'), end: endM.format('YYYY-MM-DD')});
+
+        MyApp.trigger('refreshTable', this.collection);
+    },
 });
 

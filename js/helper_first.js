@@ -10,7 +10,7 @@ MyApp.module('FirstPage', function (FirstPage, MyApp, Backbone, Marionette, $, _
 			FirstPage.root = new MyApp.Layout.Root();
 			/*FirstPage.main = new MyApp.Layout.Main();*/
 
-			/*this.domains = new DomainList();
+			this.domains = new DomainList();
 
 			this.domains.url = "https://api.eco-counter-tools.com/v1/" + MyApp.apiKey + "/counting_site/";
 
@@ -21,9 +21,9 @@ MyApp.module('FirstPage', function (FirstPage, MyApp, Backbone, Marionette, $, _
 					console.log("Domain list fetch complete...")
 					self.showSearchButton();
 				}
-			})*/
+			})
 
-			this.showSearchButton();
+			//this.showSearchButton();
 		},
 
 		showSearchButton: function() {
@@ -123,12 +123,13 @@ MyApp.module('FirstPage', function (FirstPage, MyApp, Backbone, Marionette, $, _
 			var id = ids.shift();
 
 			if (id) {
+
 				var dataCollection = new DataCollection();
 				dataCollection.url = "https://api.eco-counter-tools.com/v1/" + MyApp.apiKey + "/data/periode/" 
 							+ id
 							+ '?begin=' + moment(self.model.get('begin')).format('YYYYMMDD')
 							+ '&end=' + moment(self.model.get('end')).format('YYYYMMDD')
-							+ '&step=' + 3;
+							+ '&step=' + self.model.get('step');
 
 				dataCollection.fetch({
 					success: function() {
@@ -193,9 +194,6 @@ MyApp.module('FirstPage', function (FirstPage, MyApp, Backbone, Marionette, $, _
 			if (this.dateView) this.dateView.remove();
 			if (this.submitItemView) this.submitItemView.remove();
 			if (this.tableCollectionViewTest) this.tableCollectionViewTest.close();
-
-			/*this.parameter = new ParameterItemView({myModel: this.model});
-			FirstPage.root.showChildView('parameter', this.parameter);*/
 
 			this.tableCollectionViewTest = new TableCollectionViewTest({collection: counters, myModel: this.model});
 			FirstPage.root.counters.show(this.tableCollectionViewTest);

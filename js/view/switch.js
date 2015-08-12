@@ -3,7 +3,8 @@ var SwitchItemView = Backbone.Marionette.ItemView.extend({
 
 	events: {
 		"click #chartToggle" : "toggleChartView",
-		"click #cumulChartToggle" : "toggleCumulChartView"
+		"click #cumulHourlyChartToggle" : "toggleHourlyCumulChartView",
+		"click #cumulDailyChartToggle" : "toggleDailyCumulChartView"
 	},
 
 	initialize: function(options) {
@@ -15,8 +16,12 @@ var SwitchItemView = Backbone.Marionette.ItemView.extend({
 		MyApp.trigger('showChart');
 	},
 
-	toggleCumulChartView: function() {
-		MyApp.trigger('showCumulChart');
+	toggleHourlyCumulChartView: function() {
+		MyApp.trigger('showHourlyCumulChart');
+	},
+
+	toggleDailyCumulChartView: function() {
+		MyApp.trigger('showDailyCumulChart');
 	},
 
 	onShow: function() {

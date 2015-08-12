@@ -4,7 +4,7 @@ body {
 	height: 100%;
 }
 
-#info2:empty, #info:empty, #photos:empty, #pie:empty, #stats:empty {
+#info2:empty, #info:empty, #photos:empty, #pie:empty, #stats:empty, #switchButton:empty {
 	display: none;
 }
 
@@ -48,9 +48,9 @@ body {
 	z-index: 10;
 }
 
-.select_interval, .select_step {
+/*.select_interval {
 	width: 150px;
-}
+}*/
 
 /* PARAMETER */
 .para_buttons {
@@ -58,10 +58,11 @@ body {
 }
 
 .navigation {
-	width: 300px;
+	/*width: 300px;*/
 	display: block;
-	margin-left: auto;
-	margin-right: auto;
+/*	margin-left: auto;
+	margin-right: auto;*/
+	text-align: center;
 }
 
 /* TABLE */
@@ -272,6 +273,10 @@ div[day=Sunday][hour="23:00"] {
 	height: 220px;
 }
 
+#switchButton.well {
+	height : 220px;
+}
+
 .channelName {
 	font-weight: bold;
 }
@@ -301,4 +306,8 @@ div[day=Sunday][hour="23:00"] {
 	display:inline-block;
 	margin-right:10px;
 	float: left;
+}
+
+.well.parameters {
+	height: 300px;
 }

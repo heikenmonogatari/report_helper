@@ -2,7 +2,7 @@
 <html>
     <head lang="en">
         <meta charset="UTF-8">
-        <title>Report Helper 1.7</title>
+        <title>Report Helper 1.8</title>
         <link rel="stylesheet" href="libraries/DataTables-1.10.7/media/css/jquery.dataTables.css"/>
         <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico">
         <!-- <link rel="stylesheet" href="css/style.css"/> -->
@@ -30,7 +30,7 @@
             <div id="info2" class="well"></div>
             <div id="stats"></div>
             <div id="pie" class="well"></div>
-            <div id="switchButton"></div>
+            <div id="switchButton" class="well"></div>
             <div id="chart"></div>
             <div id="cumulChart"></div>
             <div id="map"></div>
@@ -42,6 +42,7 @@
 
             <div id="popup" class="popbox"></div>
         </div>
+
         <!-- TEMPLATES -->
 
        	<!-- search_template -->
@@ -61,7 +62,7 @@
 
         <!-- counterList_template -->
         <script type="text/template" id="counterList_template">
-            <td><%- name %></td><td><%- id %></td><td><%- serial %></td><td><input type='checkbox' 
+            <td><%- name %></td><td><%- id %></td><td><%- serial %></td><td class="checkMe"><input type='checkbox' 
             id='<%- id %>-<%- serial %>' value='checked' checked></td>
         </script>
 
@@ -87,21 +88,23 @@
             <div class="well">
                 <div class="form-group">
                     <label for="date_begin">Begin: </label>
-                    <div class="input-group date col-lg-2 col-md-2 col-sm-6 col-xs-6">
+                    <div class="input-group date col-lg-2 col-md-2 col-sm-12 col-xs-12">
                         <input type="text" class="dateInput form-control" id="date_begin" value="<%- begin %>"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                     </div>
                     <label for="date_end">End: </label>
-                    <div class="input-group date col-lg-2 col-md-2 col-sm-6 col-xs-6">
+                    <div class="input-group date col-lg-2 col-md-2 col-sm-12 col-xs-12">
                         <input type="text" class="dateInput form-control" id="date_end" value="<%- end %>"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="step_selector">Step: </label>
-                        <select class="form-control select_step" id="step_selector">
-                            <option selected="selected" value="3">Hourly</option>
-                            <option value="4">Daily</option>
-                        </select>
+                        <div class="input-group col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                            <select class="form-control select_step" id="step_selector">
+                                <option selected="selected" value="3">Hourly</option>
+                                <option value="4">Daily</option>
+                            </select>
+                        </div>
                 </div>
 
             </div>
@@ -174,18 +177,20 @@
 
         <script type="text/template" id="sdbutton_template">
 
-            <div class="well">
+            <div class="well parameters col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 <div class="form-group">
                     <label for="dropdownDate_selector">Interval: </label>
-                        <select class="form-control select_interval" id="dropdownDate_selector">
-                            <option value=""></options>
-                            <option value="2">Rolling week</option>
-                            <option value="3">Previous week</option>
-                            <option value="4">Rolling month</option>
-                            <option value="5">Previous month</option>
-                            <option value="6">Rolling 3 months</option>
-                            <option value="7">Previous 3 months</option>
-                        </select>
+                        <div class="input-group col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                            <select class="form-control select_interval" id="dropdownDate_selector">
+                                <option value=""></options>
+                                <option value="2">Rolling week</option>
+                                <option value="3">Previous week</option>
+                                <option value="4">Rolling month</option>
+                                <option value="5">Previous month</option>
+                                <option value="6">Rolling 3 months</option>
+                                <option value="7">Previous 3 months</option>
+                            </select>
+                        </div>
                 </div>
                 <div></div>
 
@@ -199,7 +204,7 @@
 
                 <label for="percentile-factor">Percentile Factor: </label>
                 <form class="form-horizontal" oninput="amount.value=percentileInput.value" role="form">
-                    <div class="input-group col-lg-2">
+                    <div class="input-group col-lg-2 col-md-2 col-sm-12 col-xs-12">
                         <input type="range" class="rangeInput" id="percentile-factor" name="percentileInput" min="0" max="5" value="5"></input>
                         <output name="amount" class="rangeOutput" for="percentileInput">5</output>
                     </div>
@@ -208,8 +213,31 @@
                 <div class="input-group col-sm-1">
                     <label for="percentile-value">Percentile</label>
                     <input class="form-control input-sm" type="text" id="percentile-value" placeholder="Percentile" value="95" data-toggle="tooltip" title="Changing this value refreshes the table and may take time." data-placement="top"></input>
-                    
                 </div>
+            </div>
+            <div class="well parameters col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                <div class="form-group">
+                    <label for="date_begin">Begin: </label>
+                    <div class="input-group date col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                        <input type="text" class="dateInput form-control" id="date_begin" value=""><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    </div>
+                    <label for="date_end">End: </label>
+                    <div class="input-group date col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                        <input type="text" class="dateInput form-control" id="date_end" value=""><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="step_selector">Step: </label>
+                        <div class="input-group col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                            <select class="form-control select_step" id="step_selector">
+                                <option selected="selected" value="3">Hourly</option>
+                                <option value="4">Daily</option>
+                            </select>
+                        </div>
+                </div>
+                <button type='button' class="domain_link btn btn-primary btn-sm" id='submit_button'>Submit</button>
+            </div>
                 <div class="para_buttons">
                     <div class="btn-group">
                         <button type="button" class="btn btn-primary" id="sd_button" value="SD">SD</button>
@@ -253,7 +281,6 @@
                         </ul>
                     </div>
                 </div>
-            </div>
         </script>
 
         <script type="text/template" id="chart_container_template">
@@ -332,9 +359,9 @@
         </script>
 
         <script type="text/template" id="switch_template">
-        <div class="well ">
             <button type="button" id="chartToggle" class="btn btn-primary">Default Chart</button>
-            <button type="button" id="cumulChartToggle" class="btn btn-primary">Multiple Weeks</button>
+            <button type="button" id="cumulHourlyChartToggle" class="btn btn-primary">Hourly, weeks</button>
+            <button type="button" id="cumulDailyChartToggle" class="btn btn-primary">Daily, weeks</button>
 
             <div class="form-group">
                 <label for="date_begin">Begin: </label>
@@ -346,7 +373,6 @@
                     <input type="text" class="dateInput form-control" id="date_end" value='<%- end %>'><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                 </div>
             </div>
-        </div>
         </script>
 
         <!-- SCRIPTS -->
@@ -398,6 +424,7 @@
         <script src="js/view/navigationTable.js"></script>
         <script src="js/view/sdbutton.js"></script>
         <script src="js/view/cumulChart.js"></script>
+        <script src="js/view/cumulDailyChart.js"></script>
         <script src="js/view/switch.js"></script>
 
         <!-- <script src="js/view/tableTEST.js"></script> -->

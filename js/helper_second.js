@@ -41,6 +41,8 @@ MyApp.module('SecondPage', function (SecondPage, MyApp, Backbone, Marionette, $,
     		});
 		},
 
+		// Show pie chart and default chart
+		// switch.js
 		showChart: function() {
 			console.log("Displaying chart...");
 			var chartItemView = new ChartItemView({model: this.myModel});
@@ -72,34 +74,44 @@ MyApp.module('SecondPage', function (SecondPage, MyApp, Backbone, Marionette, $,
 			SecondPage.root.showChildView('switchButton', switchItemView);	
 		},
 
+		// cumulChart.js
 		showHourlyCumulChart: function() {
 			console.log("Displaying chart with multiple weeks...");
 			var cumulChart = new CumulHourlyChartItemView({model: this.myModel});
 		},
 
+		// cumulDailyChart.js
 		showDailyCumulChart: function() {
 			console.log("Displaying chart with multiple weeks...");
 			var cumulChart = new CumulDailyChartItemView({model: this.myModel});
 		},
 
+		// Show prev/next
+		// navigation.js
 		showNavigation: function() {
 			console.log("Displaying navigation menu...");
 			var navigationItemView = new NavigationItemView({model: this.myModel, date: this.date});
 			SecondPage.root.showChildView('navigation2', navigationItemView);			
 		},
 
+		// Show top left info
+		// info.js
 		showInfo: function() {
 			console.log("Displaying info box...");
 			var infoView = new InfoItemView({model: this.myModel});
 			SecondPage.root.showChildView('info2', infoView);
 		},
 
+		// Show bottom left step and period options
+		// options.js
 		showOptions: function() {
 			console.log("Displaying options...");
 			var optionsView = new OptionsItemView({model: this.myModel});
 			SecondPage.root.showChildView('option', optionsView);	
 		},
 
+		// Show pictures
+		// photo.js
 		showPictures: function() {
 			console.log("Displaying pictures if available...");
 
@@ -113,6 +125,8 @@ MyApp.module('SecondPage', function (SecondPage, MyApp, Backbone, Marionette, $,
 			SecondPage.root.showChildView('photo', photoView);	
 		},
 
+		// Show top stats
+		// stats.js
 		showStats: function(options) {
 			var statsCollectionView = new StatsCollectionView({collection: options[0], template: options[1]});
 			SecondPage.root.showChildView('stats', statsCollectionView);		
@@ -134,7 +148,6 @@ MyApp.module('SecondPage', function (SecondPage, MyApp, Backbone, Marionette, $,
     });
 
     MyApp.on('showHourlyCumulChart', function() {
-    	console.log("hello");
     	SecondPage.controller.showHourlyCumulChart();
     });
 

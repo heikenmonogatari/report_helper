@@ -268,7 +268,7 @@ div[day=Sunday][hour="23:00"] {
 	padding: 2px;
 }
 
-#stats .well {
+#stats.well {
 	padding: 2px;
 	height: 220px;
 }

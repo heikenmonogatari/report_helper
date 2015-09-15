@@ -67,7 +67,7 @@ var CumulDailyChartItemView = Backbone.Marionette.ItemView.extend({
 				zoomType: 'xy'
 			},
 	        title: {
-	            text: 'Something'
+	            text: 'Multiple Daily Cumulative Weeks Chart'
 	        },
 	        xAxis: {
 	        	categories: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']

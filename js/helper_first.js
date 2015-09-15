@@ -8,9 +8,8 @@ MyApp.module('FirstPage', function (FirstPage, MyApp, Backbone, Marionette, $, _
 			console.log("FirstPage Controller start...");
 
 			FirstPage.root = new MyApp.Layout.Root();
-			/*FirstPage.main = new MyApp.Layout.Main();*/
 
-			this.domains = new DomainList();
+			/*this.domains = new DomainList();
 
 			this.domains.url = "https://api.eco-counter-tools.com/v1/" + MyApp.apiKey + "/counting_site/";
 
@@ -21,16 +20,18 @@ MyApp.module('FirstPage', function (FirstPage, MyApp, Backbone, Marionette, $, _
 					console.log("Domain list fetch complete...")
 					self.showSearchButton();
 				}
-			})
+			})*/
 
-			//this.showSearchButton();
+			this.showSearchButton();
 		},
 
+		// search.js
 		showSearchButton: function() {
 			this.search = new SearchView({collection: this.domains});
 			FirstPage.root.showChildView('search', this.search);
 		},
 
+		// searchList.js
 		showFilteredList: function(domainList) {
 			if (this.infoView) this.infoView.remove();
 			if (this.legendView) this.legendView.remove();
@@ -50,6 +51,7 @@ MyApp.module('FirstPage', function (FirstPage, MyApp, Backbone, Marionette, $, _
         	FirstPage.root.showChildView('main', this.searchCollectionView);
 		},
 
+		// counter.js
 		showCounterList: function(counters) {
 
 			console.log("Show counters list...");
@@ -71,6 +73,7 @@ MyApp.module('FirstPage', function (FirstPage, MyApp, Backbone, Marionette, $, _
 			});
 		},
 
+		// submit.js
 		showSubmitButton: function(counters, model) {
 
 			//$('#main').append("<div id='submit'></div>");
@@ -81,6 +84,7 @@ MyApp.module('FirstPage', function (FirstPage, MyApp, Backbone, Marionette, $, _
 		},
 
 		// Les views écoutent this.model et réagissent aux changements
+		// infoTable.js
 		showInfo: function(model) {
 
 			this.model = model;
@@ -98,6 +102,7 @@ MyApp.module('FirstPage', function (FirstPage, MyApp, Backbone, Marionette, $, _
 			FirstPage.root.showChildView('info', this.infoView);
 		},
 
+		// date.js
 		showDateInput: function() {
 			this.dateView = new DateView({model: this.model});
 			FirstPage.root.showChildView('date', this.dateView);
@@ -138,6 +143,7 @@ MyApp.module('FirstPage', function (FirstPage, MyApp, Backbone, Marionette, $, _
 						self.createDataHelper(ids, counters, index+1, self);
 					}
 				});
+
 			}else{
 				self.showTable(counters);
 				self.showButtons(counters);
@@ -145,6 +151,7 @@ MyApp.module('FirstPage', function (FirstPage, MyApp, Backbone, Marionette, $, _
 		},
 
 		showButtons: function(counters) {
+			// sdbutton.js
 			this.parameterButtons = new ButtonsView({collection: counters, myModel: this.model});
 			FirstPage.root.showChildView('buttons', this.parameterButtons);
 		},
@@ -155,7 +162,6 @@ MyApp.module('FirstPage', function (FirstPage, MyApp, Backbone, Marionette, $, _
 			var index = 0;
 
 			for (var i=0; i<nbCounters; i++) {
-
 				var id = counters.at(i).get('id');
 				console.log("Fetching data of: " + counters.at(i).get('name'));
 
@@ -168,7 +174,7 @@ MyApp.module('FirstPage', function (FirstPage, MyApp, Backbone, Marionette, $, _
 
 				dataCollection.fetch({
 					success: function(datum) {
-
+						
 						var splitURL = datum.url.split("/");
 						var splitURL = splitURL[7].split("?");
 
@@ -188,7 +194,7 @@ MyApp.module('FirstPage', function (FirstPage, MyApp, Backbone, Marionette, $, _
 				});
 			};	
 		},*/
-
+		
 		showTable: function(counters) {
 
 			if (this.dateView) this.dateView.remove();
@@ -212,10 +218,12 @@ MyApp.module('FirstPage', function (FirstPage, MyApp, Backbone, Marionette, $, _
 		FirstPage.controller.start();
 	});
 
+	// Called by search.js
 	MyApp.on('search', function(options){
 		FirstPage.controller.showFilteredList(options);
 	});
 
+	// Called by searchList.js
 	MyApp.on('counterChosen', function(options){
 		FirstPage.controller.showCounterList(options.get('counters'));
 		FirstPage.controller.showInfo(options);
@@ -223,11 +231,13 @@ MyApp.module('FirstPage', function (FirstPage, MyApp, Backbone, Marionette, $, _
 		FirstPage.controller.showSubmitButton(options.get('counters'), options);
 	});
 
+	// Called by submit.js
 	MyApp.on('counterSubmit', function(options){
     	FirstPage.controller.createData(options);
     	//FirstPage.controller.showSDButton(options);
     });
 
+	// called by sdbutton.js -> changeDate
     MyApp.on('refreshTable', function(options){
     	FirstPage.controller.createData(options);
     });

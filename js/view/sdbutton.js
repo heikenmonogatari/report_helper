@@ -42,11 +42,13 @@ ButtonsView = Backbone.Marionette.ItemView.extend({
 
                 if (step == 3) {
                     for (var i=0; i<168; i++) {
+                        if (!dataList.at(i)) break;
                         var dayHourList = dataList.where({day_hour: dataList.at(i).get('day_hour')});
                         statsList[dataList.at(i).get('day_hour')] = self.getStats(dayHourList);
                     }
                 }else if (step == 4) {
                      for (var i=0; i<7; i++) {
+                        if (!dataList.at(i)) break;
                         var dayHourList = dataList.where({day_hour: dataList.at(i).get('day_hour')});
                         statsList[dataList.at(i).get('day_hour')] = self.getStats(dayHourList);
                     }
@@ -57,6 +59,7 @@ ButtonsView = Backbone.Marionette.ItemView.extend({
         });
     },
 
+    // Initialize date inputs after render
     onShow: function() {
         $('[data-toggle="tooltip"]').tooltip();
 
@@ -74,11 +77,12 @@ ButtonsView = Backbone.Marionette.ItemView.extend({
             defaultDate: moment().subtract(1, 'd').endOf('day').subtract(15, 'm').format('YYYY-MM-DD HH:mm')
         });
 
-        $('.input-group.date').datepicker({
+        $('.input-group.date.refresh').datepicker({
             format: "yyyy-mm-dd"
         });
     },
 
+    // SD button is pressed. Show orange counts
     showSD: function() {
         var factor = $('#stdDev-factor').val();
 
@@ -113,10 +117,12 @@ ButtonsView = Backbone.Marionette.ItemView.extend({
         });
     },
 
+    // No SD button is pressed. Remove orange counts
     showNoSD: function() {
         $(".stdDev").removeClass("stdDev");
     },
 
+    // Get stats for that hour/day. 
     getStats: function(dayHourList) {
         var sum = 0
 
@@ -134,19 +140,24 @@ ButtonsView = Backbone.Marionette.ItemView.extend({
         return [average, Math.sqrt(sqSum / dayHourList.length)];
     },
 
+    // return stats at the specific date_hour
     getDateStats: function(list, date_hour) {
         return list[date_hour];
     },
 
+    // Percentile factor number has been changed.
     submitPercentileFactor: function() {
         //Backbone.globalEvent.trigger('factorChange', $('#percentile-factor').val());
         this.myModel.set({percentileFactor: $('#percentile-factor').val()});
     },
 
+    // Percentile rank has been changed.
     submitPercentileValue: function() {
         this.myModel.set({percentile: $('#percentile-value').val()});
     },
 
+    // Sort counters alphanumerically. Numbers comes before letters. 12 comes after 2
+    // example: [1, 2, 11, 12] and NOT [1, 11, 12, 2]
     sortCountersAlpha: function() {
 
         var list =  $(".color-table").children('.counter');
@@ -184,6 +195,9 @@ ButtonsView = Backbone.Marionette.ItemView.extend({
         list.sort(alphanum).appendTo('.color-table');
     },
 
+    // Sort by RED. Red will go left, blue will go right. Red has priority over blue. if {r: redCounts, b: blueCounts},
+    // {1, 99} will appear on the LEFT of {0, 1}.
+    // {0, 1} will appear on the left of {0, 99}.
     sortCountersWorst: function() {
 
         var list =  $(".color-table").children('.counter');
@@ -219,6 +233,7 @@ ButtonsView = Backbone.Marionette.ItemView.extend({
         );
     },
 
+    // Same sort as sortCountersWorst but with orange instead of red
     sortCountersSD: function() {
         var list =  $(".color-table").children('.counter');
 
@@ -253,6 +268,7 @@ ButtonsView = Backbone.Marionette.ItemView.extend({
         );
     },
 
+    // Unhide All has been pressed. Unhide all counters that were stored in this.myModel.hidden
     unhideCounters: function() {
         var ids = this.myModel.get('hidden');
 
@@ -261,16 +277,18 @@ ButtonsView = Backbone.Marionette.ItemView.extend({
             $('.counter[idnum='+ids[i]+']').show();
         }
 
-        this.myModel.set({'hidden': []});
+        this.myModel.set({'hidden': []}); // reset the hidden list to empty
 
         $('input[type=checkbox]').prop('checked', false);
     },
 
+    // Unhide Last has been pressed. Unhide the last counter that had been pushed into this.myModel.hidden
     undoHideCounter: function() {
         $('.counter[idnum='+this.myModel.get('hidden').pop()+']').show();
         $('input[type=checkbox]').prop('checked', false);
     },
 
+    // Remove Blue Columns has been pressed. Hide all completely blue columns. Push counters into this.myModel.hidden
     hideBlueCounter: function() {
         var list =  $(".color-table").children('.counter');
         var self = this;
@@ -321,6 +339,7 @@ ButtonsView = Backbone.Marionette.ItemView.extend({
         MyApp.trigger("refreshTable", this.collection);
     },
 
+    // validation mode
     valMode: function() {
         $('.vertical-text2').each(function(i, obj) {
             $(this).children('input').attr('class', "validateMe");
@@ -329,6 +348,7 @@ ButtonsView = Backbone.Marionette.ItemView.extend({
         $('.validationOpts').show();
     },
 
+    // normal mode
     norMode: function() {
         $('.vertical-text2').each(function(i, obj) {
             $(this).children('input').attr('class', "hideMe");
@@ -349,8 +369,11 @@ ButtonsView = Backbone.Marionette.ItemView.extend({
             var activate = 1;
         }
 
-        var begin = $('#date_begin').val();
-        var end = $('#date_end').val();
+        var begin = $('#date_begin2').val();
+        var end = $('#date_end2').val();
+
+        console.log(begin);
+        console.log(end);
 
         $('.vertical-text2').each(function(i, obj) {
             if ($(this).children().is(":checked")) {
@@ -366,8 +389,12 @@ ButtonsView = Backbone.Marionette.ItemView.extend({
 
                 statusModel.url = 'https://api.eco-counter-tools.com/v1/' + MyApp.apiKey + '/data/status';
 
+                console.log(statusModel.toJSON());
+
+                // this is a post/put for backbone, using the statusModel just created, at the URL provided
                 statusModel.save();
 
+                // Refresh all counters
                 Backbone.globalEvent.trigger('fakeRefreshStatus', [id, begin, end, activate]);
             }
         });

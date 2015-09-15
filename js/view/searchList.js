@@ -8,7 +8,17 @@ SearchItemView = Backbone.Marionette.ItemView.extend({
 	},
 
 	clickEvent: function() {
-		MyApp.trigger('counterChosen', this.model);
+		//MyApp.trigger('counterChosen', this.model);
+
+		var domain = new Backbone.Model();
+
+		domain.url = "https://api.eco-counter-tools.com/v1/" + MyApp.apiKey + "/domains/" + this.model.id;
+
+		domain.fetch({
+			success: function() {
+				MyApp.trigger('counterChosen', domain);
+			}
+		});	
 	}
 });
 

@@ -31,6 +31,8 @@ ChartItemView = Backbone.Marionette.ItemView.extend({
     	channel.url = "https://api.eco-counter-tools.com/v1/" + MyApp.apiKey + "/counting_site/channels/"
     						+ this.model.get('id');
 
+    	console.log(channel.url);
+
     	var self = this;
 
     	channel.fetch({
@@ -51,7 +53,7 @@ ChartItemView = Backbone.Marionette.ItemView.extend({
 		var self = this;
 
 		var data = new DataCollection();
-		data.url = 'https://api.eco-counter-tools.com/v1/" + MyApp.apiKey + "/data/periode/' 
+		data.url = 'https://api.eco-counter-tools.com/v1/' + MyApp.apiKey + '/data/periode/' 
 							+ this.model.get('id')
 							+ '?begin=' + this.model.get('begin')
 							+ '&end=' + this.model.get('end')
@@ -396,7 +398,7 @@ ChartItemView = Backbone.Marionette.ItemView.extend({
 
 		var ret = {};
 
-		ret[avgName] = avg.toFixed(2);
+		ret[avgName] = avg.toFixed();
 		ret[maxName] = max;
 
 		return ret;

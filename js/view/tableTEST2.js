@@ -1,5 +1,6 @@
 // TABLE ITEMVIEW
 
+// custom close function that will close and unbind views. Prevents old events to still be bound
 Backbone.View.prototype.close = function() {
     if (this.onClose) {
         this.onClose();
@@ -41,6 +42,7 @@ var TableItemViewTest = Backbone.Marionette.ItemView.extend({
 		this.$el.attr('date', moment(this.model.get('date')).format('YYYY-MM-DD'));
 	},
 
+	// Change the status color for each cell. Called fake because this data is not taken from the server, but assumed from the user input.
 	editLocalStatus: function(options) {
 
 		var id = options[0];
@@ -61,6 +63,7 @@ var TableItemViewTest = Backbone.Marionette.ItemView.extend({
 		}
 	},
 
+	// if this.myModel.percentileFactor has been changed, refresh color/shade of grey
 	refreshColors: function() {
 
 		var factor = $('#percentile-factor').val();
@@ -153,6 +156,7 @@ var TableItemViewTest = Backbone.Marionette.ItemView.extend({
   		$(e.target).removeClass("highlighted");
   	},
 
+  	// Color cell has been clicked. Open new page
   	newPage: function(e) {
 
 		var id = this.idNum;

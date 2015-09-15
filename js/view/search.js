@@ -8,14 +8,14 @@ var SearchView = Backbone.Marionette.ItemView.extend({
 
     showSearch: function() {
 
-        var query = $("#search_input").val();
+        /*var query = $("#search_input").val();
         console.log("You have searched: " + query);
 
         var filtered = this.collection.byQuery(query);
 
-        MyApp.trigger('search',filtered);
+        MyApp.trigger('search',filtered);*/
 
-        /*var query = $("#search_input").val();
+        var query = $("#search_input").val();
         console.log("You have searched: " + query);
 
         var domainList = new DomainList();
@@ -27,7 +27,7 @@ var SearchView = Backbone.Marionette.ItemView.extend({
             success: function() {
                 MyApp.trigger('search',domainList);
             }
-        });*/
+        });
     },
 
     keyAction: function(e) {

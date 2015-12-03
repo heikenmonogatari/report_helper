@@ -83,7 +83,7 @@ MyApp.module('FirstPage', function (FirstPage, MyApp, Backbone, Marionette, $, _
 			FirstPage.root.showChildView('submit', this.submitItemView);
 		},
 
-		// Les views écoutent this.model et réagissent aux changements
+		// Les views écoutent this.model et réagissent aux changements (en pratique, comme un singleton, mais pas tout à fait)
 		// infoTable.js
 		showInfo: function(model) {
 

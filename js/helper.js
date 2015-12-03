@@ -24,6 +24,7 @@ $(document).ready(function(){
 	});
 
 	MyApp.apiKey = UglyAuth.ecovisio.key;
+	//MyApp.apiKey = "Tyb99z62";
     MyApp.start();
 
 });

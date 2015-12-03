@@ -33,7 +33,8 @@ var SearchView = Backbone.Marionette.ItemView.extend({
     keyAction: function(e) {
         if (e.which == 13) {
             this.showSearch();
-            event.preventDefault();
+            //event.preventDefault();
+            if (e.originalEvent.defaultPrevented) return;
             return false;
         }
     }

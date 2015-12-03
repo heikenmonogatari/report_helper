@@ -232,9 +232,9 @@ var TableCompositeViewTest = Backbone.Marionette.CompositeView.extend({
 			}
 
 			var collection = [];
-			var currentDate = begin.format('YYYY-MM-DD HH:mm');
+			var currentDate = begin;
 			for (var i=0; i<diff; i++) {
-				collection.push({date: currentDate, comptage: null})
+				collection.push({date: currentDate.format('YYYY-MM-DD HH:mm'), comptage: null});				
 
 				if (step == 3) {
 					currentDate = moment(currentDate).add(1, 'hour');
